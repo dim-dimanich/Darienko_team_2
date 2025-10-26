@@ -51,12 +51,58 @@ int main() {
         //
         //
         //
+        double sortTime = measureSortTime(data);
+
+        cout << "Время сортировки: " << sortTime << " секунд" << endl;
+
         cout << endl;
     }
 
     return 0;
 }
 
+template<typename T>
+void insert_sort_Sokolov(vector<T>& aVector) {
+    if (aVector.empty()) return;
+
+    unsigned n = aVector.size();
+
+    
+    unsigned min_index = 0;
+    for (unsigned i = 1; i < n; ++i) {
+        if (aVector[i] < aVector[min_index]) {
+            min_index = i;
+        }
+    }
+    if (min_index != 0) {
+        swap(aVector[0], aVector[min_index]);
+    }
+
+   
+    for (unsigned i = 2; i < n; ++i) {
+        T value = aVector[i];
+        unsigned j = i;
+
+        while (j > 0 && aVector[j - 1] > value) {
+            aVector[j] = aVector[j - 1];
+            --j;
+        }
+        aVector[j] = value;
+    }
+}
+
+
+template<typename T>
+double measureSortTime(vector<T> data) {
+    auto start = chrono::high_resolution_clock::now();
+
+    insert_sort_Sokolov(data);
+
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+
+    return duration.count() / 1000000.0;
+}
 
 //
 // Ниже пишете каждый свой алгортим и выше вставляете его вызов (на счет передачи данных в функцию потом решим(копию или сами данные)))
