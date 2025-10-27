@@ -1,4 +1,4 @@
-﻿// Universal_sort.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+// Universal_sort.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 //
 
 #include <iostream>
@@ -67,7 +67,7 @@ void insert_sort_Sokolov(vector<T>& aVector) {
 
     unsigned n = aVector.size();
 
-    
+
     unsigned min_index = 0;
     for (unsigned i = 1; i < n; ++i) {
         if (aVector[i] < aVector[min_index]) {
@@ -78,7 +78,7 @@ void insert_sort_Sokolov(vector<T>& aVector) {
         swap(aVector[0], aVector[min_index]);
     }
 
-   
+
     for (unsigned i = 2; i < n; ++i) {
         T value = aVector[i];
         unsigned j = i;
@@ -88,6 +88,36 @@ void insert_sort_Sokolov(vector<T>& aVector) {
             --j;
         }
         aVector[j] = value;
+    }
+}
+
+template<typename T>
+void pivnenko_shell(vector<T>& aVector) {
+    if (aVector.empty()) return;
+
+    int n = aVector.size();
+
+    // Используем последовательность Кнута для выбора промежутков
+    int gap = 1;
+    while (gap < n / 3) {
+        gap = 3 * gap + 1;
+    }
+
+    // Последовательно уменьшаем промежуток
+    while (gap >= 1) {
+        // Сортируем элементы на расстоянии gap
+        for (int i = gap; i < n; i++) {
+            T temp = aVector[i];
+            int j = i;
+
+            // Сдвигаем элементы, пока не найдем правильную позицию для temp
+            while (j >= gap && aVector[j - gap] > temp) {
+                aVector[j] = aVector[j - gap];
+                j -= gap;
+            }
+            aVector[j] = temp;
+        }
+        gap = gap / 3;
     }
 }
 
@@ -104,11 +134,22 @@ double measureSortTime(vector<T> data) {
     return duration.count() / 1000000.0;
 }
 
+template<typename T>
+double measureShellSortTime(vector<T> data) {
+    auto start = chrono::high_resolution_clock::now();
+
+    pivnenko_shell(data);
+
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
+
+    return duration.count() / 1000000.0;
+}
+
 //
 // Ниже пишете каждый свой алгортим и выше вставляете его вызов (на счет передачи данных в функцию потом решим(копию или сами данные)))
 //Замер времени реализуете в своём алгоритме + вывод каких-то данных (оговорить формат)
 //
-
 
 
 
