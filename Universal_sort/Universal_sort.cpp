@@ -140,4 +140,33 @@ double measureSortTime(vector<T> data) {
 //
 
 
+template<typename T>
+void quickSort_byOsadchiy(vector<T>& arr) {
+    if (arr.size() <= 1) return;
+
+    T pivot = arr[arr.size() / 2];
+    vector<T> left, right, equal;
+
+    for (const auto& x : arr) {
+        if (x < pivot) left.push_back(x);
+        else if (x > pivot) right.push_back(x);
+        else equal.push_back(x);
+    }
+
+    quickSort_byOsadchiy(left);
+    quickSort_byOsadchiy(right);
+
+    arr = left;
+    arr.insert(arr.end(), equal.begin(), equal.end());
+    arr.insert(arr.end(), right.begin(), right.end());
+}
+
+template<typename T>
+long long quickSort_byOsadchiy_timed(vector<T>& arr) {
+    auto start = chrono::high_resolution_clock::now();
+    quickSort_byOsadchiy(arr);
+    auto end = chrono::high_resolution_clock::now();
+    return chrono::duration_cast<chrono::microseconds>(end - start).count();
+}
+
 
