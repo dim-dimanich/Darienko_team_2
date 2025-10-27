@@ -134,18 +134,6 @@ double measureSortTime(vector<T> data) {
     return duration.count() / 1000000.0;
 }
 
-template<typename T>
-double measureShellSortTime(vector<T> data) {
-    auto start = chrono::high_resolution_clock::now();
-
-    pivnenko_shell(data);
-
-    auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::microseconds>(end - start);
-
-    return duration.count() / 1000000.0;
-}
-
 //
 // Ниже пишете каждый свой алгортим и выше вставляете его вызов (на счет передачи данных в функцию потом решим(копию или сами данные)))
 //Замер времени реализуете в своём алгоритме + вывод каких-то данных (оговорить формат)
