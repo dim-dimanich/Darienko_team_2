@@ -38,7 +38,7 @@ vector<string> readDataFromFileUnity(const string& filename) {
 }
 
 template<typename T>
-float measureSortTimeUnity(void (*sortFunction)(vector<T>&), vector<T> data) {
+float measureSortTimeUnity(void (*sortFunction)(vector<T>&), vector<T>& data) {
     auto start = chrono::high_resolution_clock::now();
     sortFunction(data);
     auto end = chrono::high_resolution_clock::now();
