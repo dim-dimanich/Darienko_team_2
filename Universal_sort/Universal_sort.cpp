@@ -140,26 +140,30 @@ void pivnenko_shell(vector<T>& aVector) {
         gap = gap / 3;
     }
 }
+template<typename T>
+void quickSort(vector<T>& arr, int left, int right) {
+    if (left >= right) return;
+ 
+    T pivot = arr[(left + right) / 2];
+    int i = left, j = right;
+
+    while (i <= j) {
+        while (arr[i] < pivot) i++;
+        while (arr[j] > pivot) j--;
+        if (i <= j) {
+            swap(arr[i], arr[j]);
+            i++;
+            j--;
+        }
+    }
+
+    quickSort(arr, left, j);
+    quickSort(arr, i, right);
+}
 
 template<typename T>
 void quickSort_byOsadchiy(vector<T>& arr) {
-    if (arr.size() <= 1) return;
-
-    T pivot = arr[arr.size() / 2];
-    vector<T> left, right, equal;
-
-    for (const auto& x : arr) {
-        if (x < pivot) left.push_back(x);
-        else if (x > pivot) right.push_back(x);
-        else equal.push_back(x);
-    }
-
-    quickSort_byOsadchiy(left);
-    quickSort_byOsadchiy(right);
-
-    arr = left;
-    arr.insert(arr.end(), equal.begin(), equal.end());
-    arr.insert(arr.end(), right.begin(), right.end());
+    quickSort(arr, 0, arr.size() - 1);
 }
 
 template<typename T>
